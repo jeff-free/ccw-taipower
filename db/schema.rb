@@ -18,9 +18,10 @@ ActiveRecord::Schema.define(version: 2018_08_22_131403) do
   create_table "expenditures", force: :cascade do |t|
     t.string "title"
     t.integer "amount"
-    t.integer "applicant_id"
+    t.integer "organization_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_expenditures_on_organization_id"
   end
 
 end

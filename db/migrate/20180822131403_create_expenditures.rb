@@ -3,7 +3,7 @@ class CreateExpenditures < ActiveRecord::Migration[5.2]
     create_table :expenditures do |t|
       t.string :title
       t.integer :amount
-      t.integer :applicant_id
+      t.integer :organization_id, index: true
 
       t.timestamps
     end
