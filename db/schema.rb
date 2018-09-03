@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_22_131403) do
+ActiveRecord::Schema.define(version: 2018_09_03_024400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,9 +19,29 @@ ActiveRecord::Schema.define(version: 2018_08_22_131403) do
     t.string "title"
     t.integer "amount"
     t.integer "organization_id"
+    t.datetime "approved_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["approved_date"], name: "index_expenditures_on_approved_date"
     t.index ["organization_id"], name: "index_expenditures_on_organization_id"
+  end
+
+  create_table "organizations", force: :cascade do |t|
+    t.string "name"
+    t.integer "representative_id"
+    t.integer "np_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["np_type"], name: "index_organizations_on_np_type"
+    t.index ["representative_id"], name: "index_organizations_on_representative_id"
+  end
+
+  create_table "representatives", force: :cascade do |t|
+    t.string "name"
+    t.integer "party"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["party"], name: "index_representatives_on_party"
   end
 
 end
