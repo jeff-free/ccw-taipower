@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root controller: :pages, action: :index
   namespace :admin do
     resources :expenditures do
-      collection :import
+      post :import, on: :collection
     end
     root controller: :base, action: :dashboard
   end

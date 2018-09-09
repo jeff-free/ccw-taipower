@@ -1,18 +1,29 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Admin Expenditures</h1>
+<h1>補助資料總覽</h1>
 
-<table>
+<%= simple_form_for(:expenditure, url: import_admin_expenditures_path) do |f| %>
+  <%= f.input :file, label: '上傳補助資料檔案(XLSX)', as: :file, input_html: {'accept': '.xlsx' } %>
+  <%= f.button :submit, '送出' %>
+<% end %>
+<%= link_to '新增單筆補助資料', new_admin_expenditure_path %>
+
+<table class="table">
   <thead>
     <tr>
-      <th colspan="3"></th>
+      <th>核准日期</th>
+      <th>名稱</th>
+      <th>金額</th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @expenditures.each do |expenditure| %>
       <tr>
-        <td><%= link_to 'Show', [:admin, expenditure] %></td>
+        <td><%= link_to expenditure.approved_date.strftime('%F'), [:admin, expenditure] %></td>
+        <td><%= link_to truncate(expenditure.title), [:admin, expenditure] %></td>
+        <td><%= link_to number_to_currency(expenditure.amount, precision: 0), [:admin, expenditure] %></td>
         <td><%= link_to 'Edit', edit_admin_expenditure_path(expenditure) %></td>
         <td><%= link_to 'Destroy', [:admin, expenditure], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
@@ -20,6 +31,5 @@
   </tbody>
 </table>
 
-<br>
 
-<%= link_to '新增', new_admin_expenditure_path %>
+<%= paginate @expenditures %>

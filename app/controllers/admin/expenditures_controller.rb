@@ -4,7 +4,7 @@ class Admin::ExpendituresController < Admin::BaseController
   # GET /admin/expenditures
   # GET /admin/expenditures.json
   def index
-    @xpenditures = Expenditure.all
+    @expenditures = Expenditure.order(approved_date: :desc).page(params[:page]).per(50)
   end
 
   # GET /admin/expenditures/1
@@ -65,6 +65,9 @@ class Admin::ExpendituresController < Admin::BaseController
     respond_to do |format|
       if Expenditure.import(expenditure_params[:file])
         format.html { redirect_to [:admin, :expenditures], notice: '匯入成功' }
+      else
+        @expenditures = Expenditure.all
+        format.html { render :index }
       end
     end
   end
@@ -75,6 +78,7 @@ class Admin::ExpendituresController < Admin::BaseController
   end
 
   def expenditure_params
-    params.fetch(:expenditure, {}).permit(:file)
+    params.fetch(:expenditure, {})
+          .permit(:file, :title, :approved_date, :amount, :organization_id)
   end
 end

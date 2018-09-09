@@ -1,4 +1,16 @@
 <p id="notice"><%= notice %></p>
+<table class="table">
+  <tbody>
+    <tr>
+      <td><%= @expenditure.approved_date.strftime('%F') %></td>
+      <td><%= truncate(@expenditure.title) %></td>
+      <td><%= number_to_currency(@expenditure.amount, precision: 0) %></td>
+    </tr>
+  </tbody>
+</table>
 
-<%= link_to 'Edit', edit_admin_expenditure_path(@admin_expenditure) %> |
-<%= link_to 'Back', admin_expenditures_path %>
+<%= link_to 'Edit', edit_admin_expenditure_path(@expenditure) %> |
+<%= link_to 'Back', admin_expenditures_path %> | 
+
+
+<%= link_to 'Destroy', [:admin, @expenditure], method: :delete, data: { confirm: 'Are you sure?' } %> |

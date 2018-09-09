@@ -1,6 +1,6 @@
 <h1>New Admin Expenditure</h1>
 
-<%= form_with(model: [:admin, @expenditure], local: true) do |f| %>
+<%= simple_form_for(@expenditure, url: [:admin, :expenditures]) do |f| %>
   <%= render 'form', f: f %>
   <% if @expenditure.errors.any? %>
     <div id="error_explanation">

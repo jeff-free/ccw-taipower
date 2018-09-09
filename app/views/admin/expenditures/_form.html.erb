@@ -1,5 +1,9 @@
 <div class="actions">
-  <%= f.label :file, '上傳台電補助紀錄 XLSX 檔案' %>
-  <%= f.file_field :file %>
-  <%= f.submit %>
+  <%= f.input :title %>
+  <div class="form-group required">
+    <%= f.label :approved_date, class: "form-control-label" %>
+    <%= f.date_field :approved_date, class: 'form-control' %>
+  </div>
+  <%= f.input :amount %>
+  <%= f.button :submit, '送出' %>
 </div>

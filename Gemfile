@@ -39,10 +39,16 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'devise'
+gem 'bootstrap', '~> 4.1.3'
+gem 'simple_form'
+gem 'active_link_to'
+gem 'kaminari'
+
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry-rails'
+  gem 'pry-byebug'         # debugger navigation commands
+  gem 'pry-stack_explorer'
 end
 
 group :development do
@@ -55,11 +61,11 @@ group :development do
 end
 
 group :test do
-  # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15', '< 4.0'
-  gem 'selenium-webdriver'
-  # Easy installation and use of chromedriver to run system tests with Chrome
-  gem 'chromedriver-helper'
+  # # Adds support for Capybara system testing and selenium driver
+  # gem 'capybara', '>= 2.15', '< 4.0'
+  # gem 'selenium-webdriver'
+  # # Easy installation and use of chromedriver to run system tests with Chrome
+  # gem 'chromedriver-helper'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

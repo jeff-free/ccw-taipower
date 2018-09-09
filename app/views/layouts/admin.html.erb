@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CcwTaipower</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'admin', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">台電追追追 - 專案管理員後台</a>
+    </nav>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2 col-sm-1 bg-light">
+          <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <%= active_link_to '補助資料', admin_expenditures_path, class: 'nav-link' %>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+          <%= yield %>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
