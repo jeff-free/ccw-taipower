@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_03_134753) do
+ActiveRecord::Schema.define(version: 2018_09_11_153507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,19 +45,34 @@ ActiveRecord::Schema.define(version: 2018_09_03_134753) do
 
   create_table "organizations", force: :cascade do |t|
     t.string "name"
-    t.integer "representative_id"
+    t.integer "relative_id"
     t.integer "np_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["np_type"], name: "index_organizations_on_np_type"
-    t.index ["representative_id"], name: "index_organizations_on_representative_id"
+    t.index ["relative_id"], name: "index_organizations_on_relative_id"
+  end
+
+  create_table "relatives", force: :cascade do |t|
+    t.string "name"
+    t.string "title"
+    t.integer "representative_id"
+    t.integer "kinship"
+    t.boolean "mismatch", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["kinship"], name: "index_relatives_on_kinship"
+    t.index ["representative_id"], name: "index_relatives_on_representative_id"
   end
 
   create_table "representatives", force: :cascade do |t|
     t.string "name"
     t.integer "party"
+    t.integer "job_type"
+    t.string "job_title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["job_type"], name: "index_representatives_on_job_type"
     t.index ["party"], name: "index_representatives_on_party"
   end
 
