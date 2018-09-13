@@ -61,6 +61,15 @@ class Admin::RelativesController < Admin::BaseController
     end
   end
 
+  def import
+    if Relative.import(relative_params[:file])
+      redirect_to [:admin, :index], notice: '匯入成功'
+    else
+      @relatives = Relative.order(approved_date: :desc).page(params[:page]).per(50)
+      render :index, notice: '匯入失敗，請再次檢查資料'
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_relative
@@ -69,8 +78,8 @@ class Admin::RelativesController < Admin::BaseController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def relative_params
-      params.fetch(:relative, {}).permit(:name, :title,
-                                         :representative_id, :kinship_type,
-                                         :kinship_name, :mismatch)
+      params.fetch(:relative, {})
+            .permit(:name, :title, :representative_id, :kinship_type,
+                    :kinship_name, :mismatch, :file)
     end
 end

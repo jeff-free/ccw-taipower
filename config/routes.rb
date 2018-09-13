@@ -5,8 +5,12 @@ Rails.application.routes.draw do
     resources :expenditures do
       post :import, on: :collection
     end
-    resources :relatives
-    resources :representatives
+    resources :relatives do
+      post :import, on: :collection
+    end
+    resources :representatives do
+      post :import, on: :collection
+    end
     root controller: :base, action: :dashboard
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

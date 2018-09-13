@@ -61,6 +61,15 @@ class Admin::RepresentativesController < Admin::BaseController
     end
   end
 
+  def import
+    if Representative.import(representative_params[:file])
+      redirect_to [:admin, :representatives], notice: '匯入成功'
+    else
+      @representatives = Representative.order(approved_date: :desc).page(params[:page]).per(50)
+      render :index, notice: '匯入失敗，請再次檢查資料'
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_representative
@@ -69,7 +78,7 @@ class Admin::RepresentativesController < Admin::BaseController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def representative_params
-      params.fetch(:representative, {}).permit(:name, :party, :job_type,
-                                               :job_title)
+      params.fetch(:representative, {})
+            .permit(:name, :party, :job_type, :job_title, :file)
     end
 end

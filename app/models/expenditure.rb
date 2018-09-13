@@ -1,6 +1,6 @@
 class Expenditure < ApplicationRecord
+  include Importable
   validates_presence_of :title, :amount, :approved_date
-  attr_accessor :file
 
   def self.import(file)
     return false unless file
