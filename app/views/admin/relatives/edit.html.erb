@@ -1,0 +1,9 @@
+<h1>Editing Relative</h1>
+<%= simple_form_for([:admin, @relative]) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+  <%= render 'form', f: f %>
+<% end %>
+
+<%= link_to 'Show', [:admin, @relative] %> |
+<%= link_to 'Back', admin_relatives_path %>

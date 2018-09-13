@@ -57,11 +57,12 @@ ActiveRecord::Schema.define(version: 2018_09_11_153507) do
     t.string "name"
     t.string "title"
     t.integer "representative_id"
-    t.integer "kinship"
+    t.integer "kinship_type", default: 0
+    t.string "kinship_name"
     t.boolean "mismatch", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["kinship"], name: "index_relatives_on_kinship"
+    t.index ["kinship_type"], name: "index_relatives_on_kinship_type"
     t.index ["representative_id"], name: "index_relatives_on_representative_id"
   end
 

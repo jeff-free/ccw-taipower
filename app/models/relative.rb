@@ -1,4 +1,4 @@
 class Relative < ApplicationRecord
   has_one :organization
-  enum kinship: [:father, :mother, :sister]
+  enum kinship_type: [:onself, :spouse, :other_kinship]
 end
