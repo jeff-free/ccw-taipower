@@ -11,6 +11,9 @@ Rails.application.routes.draw do
     resources :representatives do
       post :import, on: :collection
     end
+    resources :organizations do
+      post :import, on: :collection
+    end
     root controller: :base, action: :dashboard
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

@@ -1,7 +1,11 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Relatives</h1>
+<h1>民代親屬 / 補助單位負責人列表</h1>
 
+<%= simple_form_for(:relative, url: import_admin_relatives_path) do |f| %>
+  <%= f.input :file, label: '上傳親屬資料檔案(XLSX)', as: :file, input_html: {'accept': '.xlsx' } %>
+  <%= f.button :submit, '送出' %>
+<% end %>
 <%= link_to '新增親屬', new_admin_relative_path %>
 <table class="table">
   <thead>

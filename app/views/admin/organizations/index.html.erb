@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>團體列表</h1>
+<p>排除無負責人之團體</p>
+
+<%= link_to '匯入 / 更新團體資料', import_admin_organizations_path, method: :post,
+    class: 'btn btn-primary', confirm: '需要長時間執行，請確認網站目前負荷' %>
+<br>
+
+<%= link_to '新增團體', new_admin_organization_path %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>團體名稱</th>
+      <th>團體類別</th>
+      <th>負責人姓名</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @organizations.each do |organization| %>
+      <tr>
+        <td><%= link_to organization.name, [:admin, organization] %></td>
+        <td><%= organization.np_type %></td>
+        <td><%= organization.owner_name %></td>
+        <td><%= link_to 'Edit', edit_admin_organization_path(organization) %></td>
+        <td><%= link_to 'Destroy', [:admin, organization], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @organizations %>
