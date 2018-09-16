@@ -2,17 +2,32 @@
 
 <h1>民代列表</h1>
 
+<%= simple_form_for(:representative, url: import_admin_representatives_path) do |f| %>
+  <%= f.input :file, label: '上傳民代資料檔案(XLSX)', as: :file, input_html: {'accept': '.xlsx' } %>
+  <%= f.button :submit, '送出' %>
+<% end %>
+<%= link_to '新增單筆民代資料', new_admin_representative_path %>
+
 <table class="table">
   <thead>
     <tr>
-      <th colspan="3"></th>
+      <th>姓名</th>
+      <th>黨籍</th>
+      <th>職務</th>
+      <th>職稱</th>
+      <th>親屬人數</th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @representatives.each do |representative| %>
       <tr>
-        <td><%= link_to 'Show', [:admin, representative] %></td>
+        <td><%= link_to representative.name, [:admin, representative] %></td>
+        <td><%= representative.job_type %></td>
+        <td><%= representative.job_title %></td>
+        <td><%= Representative::PARTIES_MAPPING[representative.party] %></td>
+        <td>親屬人數</td>
         <td><%= link_to 'Edit', edit_admin_representative_path(representative) %></td>
         <td><%= link_to 'Destroy', [:admin, representative], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

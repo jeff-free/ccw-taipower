@@ -3,4 +3,5 @@ class Admin::BaseController < ApplicationController
   layout 'admin'
 
   def dashboard; end
+
 end
