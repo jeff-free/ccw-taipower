@@ -61,6 +61,15 @@ class RelativesController < ApplicationController
     end
   end
 
+  def import
+    if RelativeBuilder.import(relative_params[:file])
+      redirect_to [:admin, :relatives], notice: '匯入成功！'
+    else
+      @relatives = Relative.page(params[:page]).per(50)
+      render :index, notice: '匯入失敗'
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_relative
