@@ -13,6 +13,7 @@
       <th>民代姓名</th>
       <th>民代黨籍</th>
       <th>親屬姓名</th>
+      <th>關係</th>
       <th>團體名稱</th>
       <th colspan="3"></th>
     </tr>
@@ -21,10 +22,11 @@
   <tbody>
     <% @relatives.each do |relative| %>
       <tr>
-        <td><%= link_to relative.representative.name, [:admin, relative] %></td>
+        <td><%= link_to relative.representative.name, [:admin, relative.representative] %></td>
         <td><%= link_to relative.representative.party, [:admin, relative] %></td>
         <td><%= link_to relative.name, [:admin, relative] %></td>
-        <td><%= link_to relative&.organization&.name, [:admin, relative] %></td>
+        <td><%= relative.kinship_name %></td>
+        <td><%= link_to relative&.organization&.name, [:admin, relative.organization] %></td>
         <td><%= link_to 'Edit', edit_admin_relative_path(relative) %></td>
         <td><%= link_to 'Destroy', [:admin, relative], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

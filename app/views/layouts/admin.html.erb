@@ -19,16 +19,19 @@
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <%= active_link_to '補助資料', admin_expenditures_path, class: 'nav-link' %>
+                <h6 class="nav-link" >請依順序匯入資料</h6>
               </li>
               <li class="nav-item">
-                <%= active_link_to '親屬資料', admin_relatives_path, class: 'nav-link' %>
+                <%= active_link_to '補助資料(第一步)', admin_expenditures_path, class: 'nav-link' %>
               </li>
               <li class="nav-item">
-                <%= active_link_to '民代資料', admin_representatives_path, class: 'nav-link' %>
+                <%= active_link_to '團體資料(第二步)', admin_organizations_path, class: 'nav-link' %>
               </li>
               <li class="nav-item">
-                <%= active_link_to '團體資料', admin_organizations_path, class: 'nav-link' %>
+                <%= active_link_to '民代資料(第三步)', admin_representatives_path, class: 'nav-link' %>
+              </li>
+              <li class="nav-item">
+                <%= active_link_to '親屬資料(第四步))', admin_relatives_path, class: 'nav-link' %>
               </li>
             </ul>
           </div>

@@ -20,19 +20,26 @@ class Organization < ApplicationRecord
       response = open(end_point_uri,
                       ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,
                       read_timeout: 300).read
+      expenditures_org_names = Expenditure.pluck(:organization_name)
       JSON.parse(response).each do |org|
         next unless org['負責人(理事長/理事主席)'].present? || org['負責人'].present?
 
         case type_enum_format
         when 'np100_1', 'np100_2', 'np100_3'
+          next unless expenditures_org_names.include?(org['團體名稱'])
+
           where(name: org['團體名稱'],
                 owner_name: org['負責人(理事長/理事主席)'],
                 np_type: type_enum_format).first_or_create
         when 'np200'
+          next unless expenditures_org_names.include?(org['教會名稱'])
+
           where(name: org['教會名稱'],
                 owner_name: org['負責人'],
                 np_type: type_enum_format).first_or_create
         when 'np300'
+          next unless expenditures_org_names.include?(org['寺廟名稱'])
+
           where(name: org['寺廟名稱'],
                 owner_name: org['負責人'],
                 np_type: type_enum_format).first_or_create

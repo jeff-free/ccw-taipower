@@ -18,6 +18,7 @@ class RelativeBuilder
           name: row[:name],
           title: relative_title_hash(xlsx)[row[:name]],
           kinship_type: Relative.kinship_type_mapping.key(kinship_type),
+          kinship_name: row[:detail][:kinship],
           representative: Representative.find_by(name: row[:detail][:representative])
         )
         owned_orgs.update_all(relative_id: relative.id)
@@ -30,6 +31,7 @@ class RelativeBuilder
       representative = Representative.find_by(name: org.owner_name)
       relative = Relative.oneself.create(name: org.owner_name,
                                          title: representative.job_title,
+                                         kinship_name: '本人',
                                          representative: representative)
       org.update(relative_id: relative.id)
     end
