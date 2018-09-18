@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     end
     resources :relatives do
       post :import, on: :collection
+
     end
     resources :representatives do
       post :import, on: :collection
@@ -17,6 +18,7 @@ Rails.application.routes.draw do
         post :import
       end
     end
+    resources :reports, only: :index
     root controller: :base, action: :dashboard
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

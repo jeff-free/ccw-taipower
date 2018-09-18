@@ -1,6 +1,7 @@
 class Relative < ApplicationRecord
   include Importable
   has_one :organization, dependent: :nullify
+  has_many :expenditures, through: :organization
   belongs_to :representative
   enum kinship_type: [:oneself, :spouse, :other_kinship]
 

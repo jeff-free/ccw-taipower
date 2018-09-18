@@ -4,6 +4,7 @@ class Organization < ApplicationRecord
   include Importable
   belongs_to :owner, class_name: 'Relative', foreign_key: :relative_id,
                      required: false
+  has_many :expenditures
   enum np_type: [:np100_1, :np100_2, :np100_3, :np200, :np300, :np400,
                  :np500, :np600, :np700]
 
@@ -24,25 +25,27 @@ class Organization < ApplicationRecord
       JSON.parse(response).each do |org|
         next unless org['負責人(理事長/理事主席)'].present? || org['負責人'].present?
 
-        case type_enum_format
-        when 'np100_1', 'np100_2', 'np100_3'
-          next unless expenditures_org_names.include?(org['團體名稱'])
+        org_name = org['團體名稱'] || org['教會名稱'] || org['寺廟名稱']
+        next unless expenditures_org_names.include?(org_name)
 
-          where(name: org['團體名稱'],
-                owner_name: org['負責人(理事長/理事主席)'],
-                np_type: type_enum_format).first_or_create
-        when 'np200'
-          next unless expenditures_org_names.include?(org['教會名稱'])
+        transaction do
+          case type_enum_format
+          when 'np100_1', 'np100_2', 'np100_3'
+            next unless expenditures_org_names.include?(org['團體名稱'])
 
-          where(name: org['教會名稱'],
-                owner_name: org['負責人'],
-                np_type: type_enum_format).first_or_create
-        when 'np300'
-          next unless expenditures_org_names.include?(org['寺廟名稱'])
+            org = where(name: org['團體名稱'], owner_name: org['負責人(理事長/理事主席)'],
+                  np_type: type_enum_format).first_or_create
+          when 'np200'
+            next unless expenditures_org_names.include?(org['教會名稱'])
 
-          where(name: org['寺廟名稱'],
-                owner_name: org['負責人'],
-                np_type: type_enum_format).first_or_create
+            org = where(name: org['教會名稱'], owner_name: org['負責人'],
+                  np_type: type_enum_format).first_or_create
+          when 'np300'
+            next unless expenditures_org_names.include?(org['寺廟名稱'])
+
+            org = where(name: org['寺廟名稱'], owner_name: org['負責人'],
+                  np_type: type_enum_format).first_or_create
+          end
         end
       end
     end

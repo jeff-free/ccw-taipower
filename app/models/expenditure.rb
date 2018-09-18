@@ -1,5 +1,6 @@
 class Expenditure < ApplicationRecord
   include Importable
+  belongs_to :organization
   validates_presence_of :title, :amount, :approved_date
 
   def self.import(file)
@@ -13,12 +14,12 @@ class Expenditure < ApplicationRecord
       sheet = xlsx.sheet(sheet_name).drop(1)
       transaction do
         sheet.each do |row|
-          Expenditure.where(
+          Expenditure.find_or_create_by(
             title: row[4],
             approved_date: row[5],
             amount: row[10],
             organization_name: row[2]
-          ).first_or_create
+          )
         end
       end
     end
