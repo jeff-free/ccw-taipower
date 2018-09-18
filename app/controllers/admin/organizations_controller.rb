@@ -52,7 +52,16 @@ class Admin::OrganizationsController < Admin::BaseController
   end
 
   def import
-    if Organization.import
+    if Organization.import(organization_params[:file])
+      redirect_to [:admin, :organizations], notice: '匯入成功'
+    else
+      @organizations = Organization.page(params[:page]).per(200)
+      render :index, notice: '匯入失敗'
+    end
+  end
+
+  def import_by_api
+    if Organization.import_from_api
       redirect_to [:admin, :organizations], notice: '匯入成功'
     else
       @organizations = Organization.page(params[:page]).per(200)
@@ -78,6 +87,6 @@ class Admin::OrganizationsController < Admin::BaseController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def organization_params
-      params.fetch(:organization, {})
+      params.fetch(:organization, {}).permit(:file)
     end
 end

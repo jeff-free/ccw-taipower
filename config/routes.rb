@@ -12,7 +12,10 @@ Rails.application.routes.draw do
       post :import, on: :collection
     end
     resources :organizations do
-      post :import, on: :collection
+      collection do
+        post :import_by_api
+        post :import
+      end
     end
     root controller: :base, action: :dashboard
   end

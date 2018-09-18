@@ -1,32 +1,57 @@
 class RelativeBuilder
-
   def self.import(file)
     return false unless file
 
     xlsx = Roo::Spreadsheet.open(file)
-    relative_relation_sheet = xlsx.sheet('重量級民代(立委、正副議長)親屬關係表').drop(1)
-    relative_title_sheet = xlsx.sheet('重量級民代(立委、正副議長)親屬職稱表').drop(1)
-    Organization.select(:id, :owner_name, :relative_id).in_batches do |orgs|
-      relative_relation_sheet.each do |row|
-        next if row[2].blank?
-
-        owned_orgs = orgs.where(owner_name: row[1])
-        next if owned_orgs.blank?
-
-        title = 'pending'
-        relative = Relative.create(name: row[1],
-                                   title: relative_title_sheet[],
-                                   kinship_type: Relative.kinship_type_mapping.key(row[2]),
-                                   representative: Representative.find_by(name: row[0]))
-        owned_orgs.update_all(owner: relative)
-
-
-      end
-    end
-    
+    import_by_scanning_relatives(xlsx)
+    import_by_representative_selfs
   end
 
-  def initialize
-    
+  def self.import_by_scanning_relatives(xlsx)
+    Organization.where(owner_name: relative_array(xlsx).map { |row| row[:name] }).in_batches do |orgs|
+      relative_array(xlsx).each do |row|
+        owned_orgs = orgs.where(owner_name: row[:name])
+        next if owned_orgs.blank?
+
+        kinship_type = '其他' unless row[:detail][:kinship] == '配偶'
+        relative = Relative.find_or_create_by(
+          name: row[:name],
+          title: relative_title_hash(xlsx)[row[:name]],
+          kinship_type: Relative.kinship_type_mapping.key(kinship_type),
+          representative: Representative.find_by(name: row[:detail][:representative])
+        )
+        owned_orgs.update_all(relative_id: relative.id)
+      end
+    end
+  end
+
+  def self.import_by_representative_selfs
+    Organization.where(owner_name: Representative.pluck(:name)).each do |org|
+      representative = Representative.find_by(name: org.owner_name)
+      relative = Relative.oneself.create(name: org.owner_name,
+                                         title: representative.job_title,
+                                         representative: representative)
+      org.update(relative_id: relative.id)
+    end
+  end
+
+  def self.relative_array(xlsx)
+    @relative_array ||= Hash.new do |h, key|
+      h[key] = key.sheet('重量級民代(立委、正副議長)親屬關係表').drop(1).map do |r|
+        next if r[1] == 'N/A' || r[2].blank?
+
+        { name: r[1], detail: { representative: r[0], kinship: r[2] } }.with_indifferent_access
+      end.compact
+    end
+    @relative_array[xlsx]
+  end
+
+  def self.relative_title_hash(xlsx)
+    @relative_title_hash ||= Hash.new do |h, key|
+      h[key] = Hash[
+        key.sheet('重量級民代(立委、正副議長)親屬職稱表').drop(1).map { |row| [row[0], row[1]] }
+      ].with_indifferent_access
+    end
+    @relative_title_hash[xlsx]
   end
 end

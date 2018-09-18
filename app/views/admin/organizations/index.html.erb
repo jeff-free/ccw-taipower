@@ -3,7 +3,12 @@
 <h1>團體列表</h1>
 <p>排除無負責人之團體</p>
 
-<%= link_to '匯入 / 更新團體資料', import_admin_organizations_path, method: :post,
+<%= simple_form_for(:organization, url: import_admin_organizations_path) do |f| %>
+  <%= f.input :file, label: '由檔案匯入 / 更新地方發展協會資料', as: :file, input_html: {'accept': '.xlsx' } %>
+  <%= f.button :submit, '送出' %>
+<% end %>
+
+<%= link_to '從內政部匯入 / 更新團體資料', import_by_api_admin_organizations_path, method: :post,
     class: 'btn btn-primary', confirm: '需要長時間執行，請確認網站目前負荷' %>
 <br>
 

@@ -16,7 +16,8 @@ class Expenditure < ApplicationRecord
           Expenditure.where(
             title: row[4],
             approved_date: row[5],
-            amount: row[10]
+            amount: row[10],
+            organization_name: row[2]
           ).first_or_create
         end
       end

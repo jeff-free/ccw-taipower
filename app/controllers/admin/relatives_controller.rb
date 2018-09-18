@@ -4,7 +4,7 @@ class Admin::RelativesController < Admin::BaseController
   # GET /relatives
   # GET /relatives.json
   def index
-    @relatives = Relative.all
+    @relatives = Relative.includes(:organization, :representative)
   end
 
   # GET /relatives/1
@@ -62,8 +62,8 @@ class Admin::RelativesController < Admin::BaseController
   end
 
   def import
-    if Relative.import(relative_params[:file])
-      redirect_to [:admin, :index], notice: '匯入成功'
+    if RelativeBuilder.import(relative_params[:file])
+      redirect_to [:admin, :relatives], notice: '匯入成功'
     else
       @relatives = Relative.order(approved_date: :desc).page(params[:page]).per(50)
       render :index, notice: '匯入失敗，請再次檢查資料'
@@ -71,15 +71,13 @@ class Admin::RelativesController < Admin::BaseController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_relative
-      @relative = Relative.find(params[:id])
-    end
+  def set_relative
+    @relative = Relative.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def relative_params
-      params.fetch(:relative, {})
-            .permit(:name, :title, :representative_id, :kinship_type,
-                    :kinship_name, :mismatch, :file)
-    end
+  def relative_params
+    params.fetch(:relative, {})
+          .permit(:name, :title, :representative_id, :kinship_type,
+                  :kinship_name, :mismatch, :file)
+  end
 end
