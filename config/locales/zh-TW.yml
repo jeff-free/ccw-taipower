@@ -9,6 +9,13 @@ zh-TW:
       representative/job_type:
         congressman: 立法委員
         local_council_speaker: 縣市議長
+      representative/parties:
+        dpp: 民主進步黨
+        kmt: 中國國民黨
+        npp: 時代力量
+        pfp: 親民黨
+        no_party: 無黨籍
+        other: 其他
       relative:
         name: 姓名
         kinship_type: 親屬類型

@@ -28,5 +28,7 @@ module CcwTaipower
     # the framework and any gems in your application.
 
     config.i18n.default_locale = :'zh-TW'
+    config.time_zone = 'Taipei'
+    config.active_record.default_timezone = :utc
   end
 end
