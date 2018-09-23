@@ -1,6 +1,8 @@
 class Expenditure < ApplicationRecord
   include Importable
   belongs_to :organization, required: false
+  has_one :relative, through: :organization, source: :owner
+  has_one :representative, through: :relative
   validates_presence_of :title, :amount, :approved_date
 
   def self.import(file)

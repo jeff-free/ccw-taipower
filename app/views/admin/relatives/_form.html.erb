@@ -1,5 +1,8 @@
-<div class="form-inputs">
-</div>
+<%= f.input :name %>
+<%= f.input :title %>
+<%= f.input :kinship_type, collection: Relative.kinship_type_mapping %>
+<%= f.input :kinship_name %>
+<%= f.input :mismatch %>
 
 <div class="form-actions">
   <%= f.button :submit %>

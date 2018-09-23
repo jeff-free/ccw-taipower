@@ -1,12 +1,12 @@
 module PartyClassifiable
   extend ActiveSupport::Concern
   PARTIES_MAPPING = {
-    dpp: '民主進步黨',
-    kmt: '中國國民黨',
-    npp: '時代力量',
-    pfp: '親民黨',
-    no_party: '無黨籍',
-    other: '其他'
+    '民主進步黨': :dpp,
+    '中國國民黨': :kmt,
+    '時代力量': :npp,
+    '親民黨': :pfp,
+    '無黨籍': :no_party,
+    '其他': :other
   }.with_indifferent_access
 
   included do

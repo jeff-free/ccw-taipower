@@ -1,0 +1,17 @@
+zh-TW:
+  activerecord:
+    attributes:
+      representative:
+        name: 姓名
+        party: 政黨
+        job_type: 類別
+        job_title: 職稱
+      representative/job_type:
+        congressman: 立法委員
+        local_council_speaker: 縣市議長
+      relative:
+        name: 姓名
+        kinship_type: 親屬類型
+        kinship_name: 親屬類型名稱
+        title: 職稱
+        mismatch: 錯誤配對

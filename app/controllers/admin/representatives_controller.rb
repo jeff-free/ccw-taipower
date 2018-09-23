@@ -71,14 +71,13 @@ class Admin::RepresentativesController < Admin::BaseController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_representative
-      @representative = Representative.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def representative_params
-      params.fetch(:representative, {})
-            .permit(:name, :party, :job_type, :job_title, :file)
-    end
+  def set_representative
+    @representative = Representative.find(params[:id])
+  end
+
+  def representative_params
+    params.fetch(:representative, {})
+          .permit(:name, :party, :job_type, :job_title, :file)
+  end
 end

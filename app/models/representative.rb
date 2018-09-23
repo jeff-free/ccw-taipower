@@ -1,6 +1,11 @@
 class Representative < ApplicationRecord
   include PartyClassifiable
   include Importable
+  JOB_TYPE_MAPPING = {
+    self.human_attribute_name('job_type.congressman') => :congressman,
+    self.human_attribute_name('job_type.local_council_speaker') => :local_council_speaker
+  }.with_indifferent_access
+
   has_many :relatives
   has_many :organizations, through: :relatives
   has_many :expenditures, through: :organizations
@@ -16,7 +21,7 @@ class Representative < ApplicationRecord
         row = congressman_sheet.row(row_number)
         Representative.congressman.where(
           name: row[1],
-          party: PARTIES_MAPPING.key(row[9]) || PARTIES_MAPPING.key('其他'),
+          party: PARTIES_MAPPING[row[9]] || PARTIES_MAPPING['其他'],
           job_title: '立法委員'
         ).first_or_create
       end
@@ -25,7 +30,7 @@ class Representative < ApplicationRecord
         row = local_council_speaker_sheet.row(row_number)
         Representative.local_council_speaker.where(
           name: row[1],
-          party: PARTIES_MAPPING.key(row[3]) || PARTIES_MAPPING.key('其他'),
+          party: PARTIES_MAPPING.key[row[3]] || PARTIES_MAPPING['其他'],
           job_title: row[0]
         ).first_or_create
       end
