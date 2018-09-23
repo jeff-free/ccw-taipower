@@ -7,7 +7,6 @@ Rails.application.routes.draw do
     end
     resources :relatives do
       post :import, on: :collection
-
     end
     resources :representatives do
       post :import, on: :collection

@@ -14,6 +14,7 @@ class Organization < ApplicationRecord
 
   def self.import_from_api
     base_uri = "#{ENV['npo_moi_api_endpoint']}&key=#{ENV['npo_moi_api_key']}"
+    expenditures_org_names = Expenditure.pluck(:organization_name)
     np_type_mapping.each do |type_enum_format, type_api_format|
       next if type_enum_format.in?(['np400', 'np500', 'np600', 'np700'])
 
@@ -21,31 +22,33 @@ class Organization < ApplicationRecord
       response = open(end_point_uri,
                       ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,
                       read_timeout: 300).read
-      expenditures_org_names = Expenditure.pluck(:organization_name)
-      JSON.parse(response).each do |org|
-        next unless org['負責人(理事長/理事主席)'].present? || org['負責人'].present?
+      JSON.parse(response).each do |org_row|
+        next unless org_row['負責人(理事長/理事主席)'].present? || org_row['負責人'].present?
 
-        org_name = org['團體名稱'] || org['教會名稱'] || org['寺廟名稱']
+        org_name = org_row['團體名稱'] || org_row['教會名稱'] || org_row['寺廟名稱']
         next unless expenditures_org_names.include?(org_name)
 
         transaction do
           case type_enum_format
           when 'np100_1', 'np100_2', 'np100_3'
-            next unless expenditures_org_names.include?(org['團體名稱'])
+            next unless expenditures_org_names.include?(org_row['團體名稱'])
 
-            org = where(name: org['團體名稱'], owner_name: org['負責人(理事長/理事主席)'],
-                  np_type: type_enum_format).first_or_create
+            org = find_or_create_by(name: org_row['團體名稱'],
+                                    owner_name: org_row['負責人(理事長/理事主席)'],
+                                    np_type: type_enum_format)
           when 'np200'
-            next unless expenditures_org_names.include?(org['教會名稱'])
+            next unless expenditures_org_names.include?(org_row['教會名稱'])
 
-            org = where(name: org['教會名稱'], owner_name: org['負責人'],
-                  np_type: type_enum_format).first_or_create
+            org = np200.find_or_create_by(name: org_row['教會名稱'],
+                                           owner_name: org_row['負責人'])
           when 'np300'
-            next unless expenditures_org_names.include?(org['寺廟名稱'])
+            next unless expenditures_org_names.include?(org_row['寺廟名稱'])
 
-            org = where(name: org['寺廟名稱'], owner_name: org['負責人'],
-                  np_type: type_enum_format).first_or_create
+            org = np300.find_or_create_by(name: org_row['寺廟名稱'],
+                                           owner_name: org_row['負責人'])
           end
+          Expenditure.where(organization_name: org.name)
+                     .update_all(organization_id: org.id)
         end
       end
     end
@@ -65,7 +68,8 @@ class Organization < ApplicationRecord
           name: row[1],
           owner_name: row[2]
         )
-        Expenditure.where(organization_name: row[1]).update_all(organization_id: org.id)
+        Expenditure.where(organization_name: row[1])
+                   .update_all(organization_id: org.id)
       end
     end
   end

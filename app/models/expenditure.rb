@@ -1,6 +1,6 @@
 class Expenditure < ApplicationRecord
   include Importable
-  belongs_to :organization
+  belongs_to :organization, required: false
   validates_presence_of :title, :amount, :approved_date
 
   def self.import(file)

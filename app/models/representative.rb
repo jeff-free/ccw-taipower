@@ -1,8 +1,9 @@
 class Representative < ApplicationRecord
   include PartyClassifiable
   include Importable
-  has_many :kinships
-  has_many :relatives, through: :kinship
+  has_many :relatives
+  has_many :organizations, through: :relatives
+  has_many :expenditures, through: :organizations
   enum job_type: [:congressman, :local_council_speaker]
 
   def self.import(file)

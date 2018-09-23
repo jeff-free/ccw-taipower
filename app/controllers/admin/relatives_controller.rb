@@ -5,6 +5,7 @@ class Admin::RelativesController < Admin::BaseController
   # GET /relatives.json
   def index
     @relatives = Relative.includes(:organization, :representative)
+                         .group_by { |relative| relative.representative }
   end
 
   # GET /relatives/1

@@ -4,7 +4,7 @@ class Admin::RepresentativesController < Admin::BaseController
   # GET /representatives
   # GET /representatives.json
   def index
-    @representatives = Representative.all
+    @representatives = Representative.page(params[:page])
   end
 
   # GET /representatives/1

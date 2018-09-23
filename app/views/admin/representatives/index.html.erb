@@ -27,7 +27,7 @@
         <td><%= representative.job_type %></td>
         <td><%= representative.job_title %></td>
         <td><%= Representative::PARTIES_MAPPING[representative.party] %></td>
-        <td>親屬人數</td>
+        <td><%= representative.relatives.size %></td>
         <td><%= link_to 'Edit', edit_admin_representative_path(representative) %></td>
         <td><%= link_to 'Destroy', [:admin, representative], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
@@ -37,4 +37,4 @@
 
 <br>
 
-<%= link_to 'New Representative', new_admin_representative_path %>
+<%= paginate @representatives %>
