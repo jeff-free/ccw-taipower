@@ -1,4 +1,4 @@
-class Admin::ReportsController < Admin::BaseController
+class ReportsController < ApplicationController
   def index
     @report = ReportBuilder.new
     respond_to do |format|
