@@ -87,6 +87,6 @@ class Admin::OrganizationsController < Admin::BaseController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def organization_params
-      params.fetch(:organization, {}).permit(:file)
+      params.fetch(:organization, {}).permit(:name, :owner_name, :file)
     end
 end

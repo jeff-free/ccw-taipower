@@ -40,12 +40,13 @@
                 <td><%= relative.name %></td>
                 <td><%= relative.kinship_name %></td>
                 <td><%= relative.organization.name %></td>
-                <td colspan="2">
-                  <table class="float-right inner-expenditures-list-table">
+                <td colspan="3" class="expenditures-container">
+                  <table class="inner-expenditures-list-table">
                   <% relative.organization.expenditures.each do |expenditure| %>
                     <tr>
-                      <td><%= expenditure.approved_date.strftime('%F') %></td>
-                      <td><%= number_to_currency(expenditure.amount, precision: 0) %></td>
+                      <td><%= expenditure.title %></td>
+                      <td class="text-right"><%= expenditure.approved_date.strftime('%F') %></td>
+                      <td class="text-right"><%= number_to_currency(expenditure.amount, precision: 0) %></td>
                     </tr>
                   <% end %>
                   </table>

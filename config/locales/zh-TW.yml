@@ -1,6 +1,9 @@
 zh-TW:
   activerecord:
     attributes:
+      organization:
+        name: 團體名稱
+        owner_name: 負責人姓名
       representative:
         name: 姓名
         party: 政黨
