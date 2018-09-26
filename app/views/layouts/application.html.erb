@@ -13,8 +13,10 @@
     <nav class="navbar navbar-dark bg-primary">
       <%= link_to '台電追追追', root_path, class: 'navbar-brand' %>
     </nav>
-    <div class="container">
-      <%= yield %>
+    <div class="content-wrapper">
+      <div class="container">
+        <%= yield %>
+      </div>
     </div>
   </body>
 </html>
