@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root controller: :pages, action: :index
   get :about, controller: :pages, action: :about
   get :knowledge, controller: :pages, action: :knowledge
+  resources :relatives, only: :index
   namespace :admin do
     resources :expenditures do
       post :import, on: :collection
