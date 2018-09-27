@@ -27,13 +27,17 @@ class RelativeBuilder
   end
 
   def self.import_by_representative_selfs
-    Organization.where(owner_name: Representative.pluck(:name)).each do |org|
-      representative = Representative.find_by(name: org.owner_name)
-      relative = Relative.oneself.create(name: org.owner_name,
-                                         title: representative.job_title,
-                                         kinship_name: '本人',
-                                         representative: representative)
-      org.update(relative_id: relative.id)
+    Relative.transaction do
+      Organization.where(owner_name: Representative.pluck(:name)).each do |org|
+        representative = Representative.find_by(name: org.owner_name)
+        relative = Relative.oneself.find_or_create_by(
+          name: org.owner_name,
+          title: representative.job_title,
+          kinship_name: '本人',
+          representative: representative
+        )
+        org.update(relative_id: relative.id)
+      end
     end
   end
 
@@ -42,7 +46,8 @@ class RelativeBuilder
       h[key] = key.sheet('重量級民代(立委、正副議長)親屬關係表').drop(1).map do |r|
         next if r[1] == 'N/A' || r[2].blank?
 
-        { name: r[1], detail: { representative: r[0], kinship: r[2] } }.with_indifferent_access
+        { name: r[1], detail: { representative: r[0], kinship: r[2] } }
+          .with_indifferent_access
       end.compact
     end
     @relative_array[xlsx]
