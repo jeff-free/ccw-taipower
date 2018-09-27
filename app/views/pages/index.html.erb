@@ -1,23 +1,10 @@
 <div class="pages-index">
   <div class="jumbotron">
-    <h1 class="display-4">專案介紹</h1>
-    <p class="lead">簡單介紹</p>
-    <hr class="my-4">
-    <p>更完整的專案介紹</p>
-    <p>建議可以放上相關的資料來源連結</p>
-    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-    <p>資料更新於：</p>
-    <%= Relative.maximum(:updated_at).strftime('%F %r %Z').in_time_zone %>
+    <h1 class="display-4">台電睦鄰金大解析</h1>
+    <p class="lead">建立網站公開台電年年編列數十億的「促進電力開發協助金」的補助金流向，追查公家經費是否落入與立委利害關係人(包含法定的立委本人、配偶、親屬、助理)相關的特定協會，藉此揭露未利益迴避的問題。</p>
+    <p class="data-updated-at">資料更新於：<%= Relative.maximum(:updated_at).strftime('%F %r %Z').in_time_zone %></p>
   </div>
-  <hr>
-  <div class="jumbotron">
-    <h1 class="display-4">重量級民代列表</h1>
-    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to
-      featured content or information.</p>
-    <hr class="my-4">
-    <p></p>
-    <%= link_to '下載報告(CSV)', reports_path(format: :csv), class: 'btn btn-primary btn-lg' %>
-  </div>
+  
 
   <% @representatives.each do |representative| %>
   <div class="row">
@@ -27,7 +14,12 @@
           <h5 class="card-title">
             <%= representative.name %><br>
             <small>黨籍：
-              <%= Representative.human_attribute_name("parties.#{representative.party}") %></small>
+              <%= Representative.human_attribute_name("parties.#{representative.party}") %>
+            </small>
+            <br>
+            <small>職稱：
+              <%= representative.job_title %>
+            </small>
           </h5>
           <table class="table">
             <thead>

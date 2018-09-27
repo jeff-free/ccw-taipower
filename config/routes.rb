@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   devise_for :admins
   root controller: :pages, action: :index
+  get :about, controller: :pages, action: :about
+  get :knowledge, controller: :pages, action: :knowledge
   namespace :admin do
     resources :expenditures do
       post :import, on: :collection

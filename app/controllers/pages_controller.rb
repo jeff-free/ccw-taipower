@@ -10,4 +10,8 @@ class PagesController < ApplicationController
                                              ]
                                              ).joins(:expenditures).distinct
   end
+
+  def about; end
+  
+  def knowledge; end
 end

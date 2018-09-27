@@ -27,7 +27,7 @@
           <td><%= representative.party %></td>
           <td><%= relative.name %></td>
           <td><%= relative.kinship_name %></td>
-          <td><%= relative.organization.name %></td>
+          <td><%= relative&.organization&.name %></td>
           <td><%= link_to '編輯', edit_admin_relative_path(relative) %></td>
         </tr>
       <% end %>
