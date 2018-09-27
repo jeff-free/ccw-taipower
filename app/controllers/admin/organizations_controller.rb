@@ -28,6 +28,8 @@ class Admin::OrganizationsController < Admin::BaseController
 
     respond_to do |format|
       if @organization.save
+        Expenditure.where(organization_name: @organization.name)
+                   .update_all(organization_id: @organization.id)
         format.html { redirect_to [:admin, @organization], notice: 'Organization was successfully created.' }
         format.json { render :show, status: :created, location: @organization }
       else
@@ -42,6 +44,8 @@ class Admin::OrganizationsController < Admin::BaseController
   def update
     respond_to do |format|
       if @organization.update(organization_params)
+        Expenditure.where(organization_name: @organization.name)
+                   .update_all(organization_id: @organization.id)
         format.html { redirect_to [:admin, @organization], notice: 'Organization was successfully updated.' }
         format.json { render :show, status: :ok, location: @organization }
       else

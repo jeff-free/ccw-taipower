@@ -17,7 +17,6 @@ class Organization < ApplicationRecord
     expenditures_org_names = Expenditure.pluck(:organization_name)
     np_type_mapping.each do |type_enum_format, type_api_format|
       next if type_enum_format.in?(['np400', 'np500', 'np600', 'np700'])
-
       end_point_uri = "#{base_uri}&nptype=#{type_api_format}"
       response = open(end_point_uri,
                       ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,
@@ -40,12 +39,12 @@ class Organization < ApplicationRecord
             next unless expenditures_org_names.include?(org_row['教會名稱'])
 
             org = np200.find_or_create_by(name: org_row['教會名稱'],
-                                           owner_name: org_row['負責人'])
+                                          owner_name: org_row['負責人'])
           when 'np300'
             next unless expenditures_org_names.include?(org_row['寺廟名稱'])
 
             org = np300.find_or_create_by(name: org_row['寺廟名稱'],
-                                           owner_name: org_row['負責人'])
+                                          owner_name: org_row['負責人'])
           end
           Expenditure.where(organization_name: org.name)
                      .update_all(organization_id: org.id)
@@ -68,8 +67,7 @@ class Organization < ApplicationRecord
           name: row[1],
           owner_name: row[2]
         )
-        Expenditure.where(organization_name: row[1])
-                   .update_all(organization_id: org.id)
+        associate_expenditures
       end
     end
   end
