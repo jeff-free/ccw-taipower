@@ -1,0 +1,56 @@
+<div class="jumbotron">
+  <h1 class="display-4">民代親屬資料庫</h1>
+</div>
+<% @representatives.each do |party, representatives| %>
+  <div class="jumbotron">
+    <h1>
+      <%= Representative.human_attribute_name("parties.#{party}") %>
+      <small>民代總數：<%= representatives.size %></small>
+    </h1>
+
+  </div>
+  <div class="row party-row">
+    <% representatives.each do |representative| %>
+      <div class="col-sm-6 col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= representative.name %><br>
+              <br>
+              <small>職稱：
+                <%= representative.job_title %>
+              </small>
+            </h5>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>親屬姓名</th>
+                  <th>關係</th>
+                  <th>團體名稱</th>
+                  <th>職稱</th>
+                </tr>
+              </thead>
+              <% representative.relatives.where.not(kinship_type: :oneself).each do |relative| %>
+                <tr>
+                  <td>
+                    <%= relative.name %>
+                  </td>
+                  <td>
+                    <%= relative.kinship_name %>
+                  </td>
+                  <td>
+                    <%= relative.organization&.name %>
+                  </td>
+                  <td>
+                    <%= relative.title %>
+                  </td>
+                </tr>
+              <% end %>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <% end %>
+    </div>
+<% end %>

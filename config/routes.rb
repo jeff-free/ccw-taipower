@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'relatives/index'
   devise_for :admins
   root controller: :pages, action: :index
   get :about, controller: :pages, action: :about
