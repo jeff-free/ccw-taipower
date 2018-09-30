@@ -11,7 +11,6 @@ class RelativeBuilder
     Organization.where(owner_name: relative_array(xlsx).map { |row| row[:name] }).in_batches do |orgs|
       relative_array(xlsx).each do |row|
         owned_orgs = orgs.where(owner_name: row[:name])
-        next if owned_orgs.blank?
 
         kinship_type = '其他' unless row[:detail][:kinship] == '配偶'
         relative = Relative.find_or_create_by(
@@ -21,6 +20,7 @@ class RelativeBuilder
           kinship_name: row[:detail][:kinship],
           representative: Representative.find_by(name: row[:detail][:representative])
         )
+        next if owned_orgs.blank?
         owned_orgs.update_all(relative_id: relative.id)
       end
     end
