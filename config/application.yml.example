@@ -1,0 +1,19 @@
+# Add configuration values here, as shown below.
+#
+# pusher_app_id: "2954"
+# pusher_key: 7381a978f7dd7f9a1117
+# pusher_secret: abdc3b896a0ffb85d373
+# stripe_api_key: sk_test_2J0l093xOyW72XUYJHE4Dv2r
+# stripe_publishable_key: pk_test_ro9jV5SNwGb1yYlQfzG17LHK
+#
+
+development:
+  secret_key_base: 4ba775b1a5872c35003494e599f06022c45c7eefc21a5db79d7056a0279d28a27beabbbba036c3804d87cd3de849d390a725de02b12491b596fc3f4785bfd62c
+  npo_moi_api_endpoint: 
+  npo_moi_api_key: 
+  
+
+
+production:
+  secret_key_base: 
+  databse_password:
