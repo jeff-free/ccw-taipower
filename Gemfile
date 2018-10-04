@@ -62,7 +62,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'bullet'
   gem 'mina'
-  gem 'mina-puma', require: false
+  # gem 'mina-puma', require: false
+  # gem 'mina-systemd', require: false
   gem 'mina-nginx', require: false
   gem 'mina-logs', require: false
 end

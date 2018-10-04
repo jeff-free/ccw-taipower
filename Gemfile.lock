@@ -126,9 +126,6 @@ GEM
       mina (>= 1.0.2)
     mina-nginx (0.0.3)
       mina (~> 1)
-    mina-puma (1.1.0)
-      mina (~> 1.2.0)
-      puma (>= 2.13)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
@@ -262,7 +259,6 @@ DEPENDENCIES
   mina
   mina-logs
   mina-nginx
-  mina-puma
   pg
   pry-byebug
   pry-rails
