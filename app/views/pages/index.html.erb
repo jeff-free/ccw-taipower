@@ -31,7 +31,7 @@
                 <th class="text-right">補助日期 / 補助金額</th>
               </tr>
             </thead>
-            <% representative.relatives.joins(:organization).distinct.each do |relative| %>
+            <% representative.relatives.where.not(mismatch: true).joins(:organization).distinct.each do |relative| %>
             <tr>
               <td>
                 <%= relative.name %>
