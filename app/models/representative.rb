@@ -30,7 +30,7 @@ class Representative < ApplicationRecord
         row = local_council_speaker_sheet.row(row_number)
         Representative.local_council_speaker.where(
           name: row[1],
-          party: PARTIES_MAPPING.key[row[3]] || PARTIES_MAPPING['其他'],
+          party: PARTIES_MAPPING[row[3]] || PARTIES_MAPPING['其他'],
           job_title: row[0]
         ).first_or_create
       end
