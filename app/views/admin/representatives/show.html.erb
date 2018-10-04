@@ -18,7 +18,7 @@
   <tr>
     <td><%= relative.name %></td>
     <td><%= relative.kinship_name %></td>
-    <td><%= relative.organization.name %></td>
+    <td><%= relative.organization&.name %></td>
     <td>
       <ul>
         <% relative.organization.expenditures.each do |expenditure| %>
