@@ -24,9 +24,9 @@
     <% @representatives.each do |representative| %>
       <tr>
         <td><%= link_to representative.name, [:admin, representative] %></td>
-        <td><%= representative.job_type %></td>
+        <td><%= Representative.human_attribute_name("parties.#{representative.party}") %></td>
         <td><%= representative.job_title %></td>
-        <td><%= Representative::PARTIES_MAPPING[representative.party] %></td>
+        <td><%= Representative.human_attribute_name("job_type.#{representative.job_type}") %></td>
         <td><%= representative.relatives.size %></td>
         <td><%= link_to 'Edit', edit_admin_representative_path(representative) %></td>
         <td><%= link_to 'Destroy', [:admin, representative], method: :delete, data: { confirm: 'Are you sure?' } %></td>
