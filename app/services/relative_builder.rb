@@ -12,7 +12,7 @@ class RelativeBuilder
       relative_array(xlsx).each do |row|
         owned_orgs = orgs.where(owner_name: row[:name])
 
-        kinship_type = '其他' unless row[:detail][:kinship] == '配偶'
+        kinship_type = row[:detail][:kinship] == '配偶' ? '配偶' : '其他'
         relative = Relative.find_or_create_by(
           name: row[:name],
           title: relative_title_hash(xlsx)[row[:name]],
