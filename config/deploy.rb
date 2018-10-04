@@ -28,7 +28,7 @@ set :forward_agent, true     # SSH forward_agent.
 # Some plugins already add folders to shared_dirs like `mina/rails` add `public/assets`, `vendor/bundle` and many more
 # run `mina -d` to see all folders and files already included in `shared_dirs` and `shared_files`
 set :shared_dirs, fetch(:shared_dirs, []).push('public/assets')
-set :shared_files, fetch(:shared_files, []).push('config/application.yml')
+set :shared_files, fetch(:shared_files, []).push('config/application.yml', 'config/master.key', 'config/secrets.yml', 'config/database.yml')
 
 # This task is the environment that is loaded for all remote run commands, such as
 # `mina deploy` or `mina rake`.
@@ -58,13 +58,14 @@ task :deploy do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_create'
-    # invoke :'rails:db_migrate'
-    # invoke :'rails:assets_precompile'
-    # invoke :'deploy:cleanup'
+    invoke :'rails:db_migrate'
+    invoke :'rails:assets_precompile'
+    invoke :'deploy:cleanup'
 
     on :launch do
       in_path(fetch(:current_path)) do
         command %{mkdir -p tmp/}
+        command %{sudo systemctl restart rails.service}
         # invoke :'puma:hard_restart'
       end
     end

@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get 'relatives/index'
-  devise_for :admins
+  devise_for :admins, skip: [:registration, :password]
   root controller: :pages, action: :index
   get :about, controller: :pages, action: :about
   get :knowledge, controller: :pages, action: :knowledge
