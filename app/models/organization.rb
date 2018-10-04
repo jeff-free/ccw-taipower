@@ -67,7 +67,8 @@ class Organization < ApplicationRecord
           name: row[1],
           owner_name: row[2]
         )
-        associate_expenditures
+        Expenditure.where(organization_name: row[1])
+                   .update_all(organization_id: org.id)
       end
     end
   end
