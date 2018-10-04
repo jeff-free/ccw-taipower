@@ -16,7 +16,7 @@ class RelativeBuilder
         relative = Relative.find_or_create_by(
           name: row[:name],
           title: relative_title_hash(xlsx)[row[:name]],
-          kinship_type: Relative.kinship_type_mapping.key(kinship_type),
+          kinship_type: Relative.kinship_type_mapping[kinship_type],
           kinship_name: row[:detail][:kinship],
           representative: Representative.find_by(name: row[:detail][:representative])
         )
