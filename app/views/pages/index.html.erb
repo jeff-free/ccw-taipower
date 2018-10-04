@@ -30,7 +30,7 @@
                 <th class="text-right">補助日期 / 補助金額</th>
               </tr>
             </thead>
-            <% representative.relatives.joins(:organization).each do |relative| %>
+            <% representative.relatives.joins(:organization).distinct.each do |relative| %>
             <tr>
               <td>
                 <%= relative.name %>
@@ -39,11 +39,11 @@
                 <%= relative.kinship_name %>
               </td>
               <td>
-                <%= relative.organization&.name %>
+                <%= relative.organization.name %>
               </td>
               <td colspan="3" class="expenditures-container">
                 <table class="inner-expenditures-list-table">
-                  <% relative.organization.expenditures.each do |expenditure| %>
+                  <% relative.expenditures.distinct.each do |expenditure| %>
                   <tr>
                     <td>
                       <%= expenditure.title %>
