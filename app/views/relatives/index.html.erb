@@ -30,7 +30,7 @@
                   <th>職稱</th>
                 </tr>
               </thead>
-              <% representative.relatives.includes(:organization).where.not(kinship_type: :oneself).each do |relative| %>
+              <% representative.relatives.includes(:organizations).where.not(kinship_type: :oneself).each do |relative| %>
                 <tr>
                   <td>
                     <%= relative.name %>
@@ -39,7 +39,11 @@
                     <%= relative.kinship_name %>
                   </td>
                   <td>
-                    <%= relative.organization&.name %>
+                  <ul>
+                    <% relative.organizations.each do |organization| %>
+                      <li><%= organization.name %></li>
+                    <% end %>
+                  </ul>
                   </td>
                   <td>
                     <%= relative.title %>

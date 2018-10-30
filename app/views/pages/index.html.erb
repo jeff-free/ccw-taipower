@@ -28,10 +28,11 @@
                 <th>關係</th>
                 <th>團體名稱</th>
                 <th>活動名稱</th>
-                <th class="text-right">補助日期 / 補助金額</th>
+                <th class="text-right">補助日期</th>
+                <th class="text-right">補助金額</th>
               </tr>
             </thead>
-            <% representative.relatives.where.not(mismatch: true).joins(:organization).distinct.each do |relative| %>
+            <% representative.relatives.where.not(mismatch: true).joins(:organizations).distinct.each do |relative| %>
             <tr>
               <td>
                 <%= relative.name %>
@@ -39,32 +40,35 @@
               <td>
                 <%= relative.kinship_name %>
               </td>
-              <td>
-                <%= relative.organization.name %>
-              </td>
-              <td colspan="3" class="expenditures-container">
-                <table class="inner-expenditures-list-table">
-                  <% relative.expenditures.distinct.each do |expenditure| %>
-                  <tr>
-                    <td>
-                      <%= expenditure.title %>
-                    </td>
-                    <td class="text-right">
-                      <%= expenditure.approved_date.strftime('%F') %>
-                    </td>
-                    <td>
-                      <%= number_to_currency(expenditure.amount, precision: 0) %>
-                    </td>
-                  </tr>
+              <td colspan="4" class="expenditures-container">
+                <% relative.organizations.each do |organization| %>
+                  <% organization.expenditures.distinct.each do |expenditure| %>
+                  <table class="inner-expenditures-list-table">
+                    <tr>
+                      <td>
+                        <%= expenditure.organization.name %>
+                      </td>
+                      <td>
+                        <%= expenditure.title %>
+                      </td>
+                      <td class="text-right">
+                        <%= expenditure.approved_date.strftime('%F') %>
+                      </td>
+                      <td class="text-right">
+                        <%= number_to_currency(expenditure.amount, precision: 0) %>
+                      </td>
+                    </tr>
+                  </table>
                   <% end %>
-                </table>
+                <% end %>
               </td>
+              
             </tr>
             <% end %>
             <tr>
               <th class="text-right" colspan="4">
                 總金額：
-                <%= number_to_currency(representative.expenditures.map(&:amount).sum, precision: 0) %>
+                <%= number_to_currency(representative.expenditures.pluck(:amount).sum, precision: 0) %>
               </th>
             </tr>
           </table>

@@ -14,15 +14,23 @@
       <th>補助金額 / 補助日期</th>
     </tr>
   </thead>
-  <% @representative.relatives.includes(:organization, :expenditures).each do |relative| %>
+  <% @representative.relatives.includes(:organizations, :expenditures).each do |relative| %>
   <tr>
     <td><%= relative.name %></td>
     <td><%= relative.kinship_name %></td>
-    <td><%= relative.organization&.name %></td>
+    <%  %>
+    <td>
+    <ul>
+    </ul>
+    <% relative.organizations.each do |organization| %>
+      <%= organization.name %>
+    <% end %>
+    </td>
+
     <td>
     <% unless relative.expenditures.blank? %>
       <ul>
-        <% relative.organization.expenditures.each do |expenditure| %>
+        <% relative.expenditures.each do |expenditure| %>
           <li><%= number_to_currency(expenditure.amount, precision: 0) %> / <%= expenditure.approved_date.strftime('%F') %></li>
         <% end %>
       </ul>

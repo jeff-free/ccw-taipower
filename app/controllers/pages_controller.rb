@@ -1,12 +1,7 @@
 class PagesController < ApplicationController
   def index
     @representatives =
-      Representative.joins(:expenditures)
-                    .includes(:expenditures,
-                              relatives: [
-                                :organization,
-                                :expenditures
-                              ]).distinct
+      Representative.joins(:expenditures).distinct
   end
 
   def about; end
