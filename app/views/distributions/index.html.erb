@@ -1,25 +1,78 @@
 <div class="distribution-index">
-    <div class="jumbotron">
-      <h1 class="display-4">台電睦鄰金流分佈</h1>
-      <p class="lead">建立網站公開台電年年編列數十億的「促進電力開發協助金」的補助金流向，追查公家經費是否落入與立委利害關係人(包含法定的立委本人、配偶、親屬、助理)相關的特定協會，藉此揭露未利益迴避的問題。</p>
-      <p class="data-updated-at">
-        資料更新於：<%= Relative.maximum(:updated_at)&.strftime('%F %r %Z')&.in_time_zone %><br>
-        <%= link_to '資料錯誤？請聯絡我們', 'https://hackmd.io/I0ALPovCT3aHRCDanWfR_g', class: 'float-right', target: '_blank' %>
-      </p>
-    </div>
-    <div class="row">
-      <% @expenditures.group(:city).sum(:amount).sort_by { |city, amount| amount }.reverse.each do |city, amount| %>
-        <div class="col-sm-3">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">
-                <%= "#{city} :" %>
-                <br>
-                <%= number_to_currency(amount, precision: 0) %>
-              </h5>
-            </div>
-          </div>          
+  <div class="jumbotron">
+    <h1 class="display-4">台電睦鄰金流縣市分佈</h1>
+    <p class="data-updated-at">
+      資料更新於：
+      <%= Relative.maximum(:updated_at)&.strftime('%F %r %Z')&.in_time_zone %><br>
+      <%= link_to '資料錯誤？請聯絡我們', 'https://hackmd.io/I0ALPovCT3aHRCDanWfR_g', class: 'float-right', target: '_blank' %>
+    </p>
+  </div>
+  <% if @expenditures_of_city %>
+  <div class="row city-detail-card">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            <%= params[:city] %>
+            <br>
+          </h5>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>行政區</th>
+                <th>申請單位</th>
+                <th>核准日期</th>
+                <th>活動名稱</th>
+                <th>核准補助金額</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @expenditures_of_city.each do |e| %>
+              <tr>
+                <td>
+                  <%= e.district || 'N/A' %>
+                </td>
+                <td>
+                  <%= e.organization_name %>
+                </td>
+                <td>
+                  <%= e.approved_date.strftime('%F') %>
+                </td>
+                <td>
+                  <%= e.title %>
+                </td>
+                <td>
+                  <%= number_to_currency(e.amount, precision: 0) %>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <div class="row">
+          <div class="mx-auto">
+            <%= paginate @expenditures_of_city, window: 3, outer_window: 3 %>
+          </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+  <% end %>
+  <div class="row">
+    <% @expenditures.group(:city).sum(:amount).sort_by { |city, amount| amount }.reverse.each do |city, amount| %>
+    <div class="col-sm-3 city-card">
+      <%= link_to distributions_path(city: city) do %>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            <%= "#{city} :" %>
+            <br>
+            <%= number_to_currency(amount, precision: 0) %>
+          </h5>
+        </div>
+      </div>
       <% end %>
     </div>
+    <% end %>
+  </div>
 </div>

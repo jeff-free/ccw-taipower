@@ -25,3 +25,9 @@ zh-TW:
         kinship_name: 親屬類型名稱
         title: 職稱
         mismatch: 錯誤配對
+  views:
+    pagination:
+      first: '第一頁'
+      last: '最末頁'
+      next: '下一頁'
+      previous: '上一頁'
