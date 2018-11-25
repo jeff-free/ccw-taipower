@@ -16,12 +16,18 @@ class Expenditure < ApplicationRecord
       sheet = xlsx.sheet(sheet_name).drop(1)
       transaction do
         sheet.each do |row|
-          Expenditure.find_or_create_by(
+          next unless row[5].is_a?(Date)
+          location = row[1] || '其他'
+          expense = Expenditure.find_or_initialize_by(
             title: row[4],
-            approved_date: row[5],
+            approved_date: row[5].try(:in_time_zone),
             amount: row[10],
-            organization_name: row[2]
+            organization_name: row[2],
+            source_index_no: row[0]
           )
+          expense.assign_attributes(city: location.first(3),
+                                    district: location[3..6])
+          expense.save
         end
       end
     end
