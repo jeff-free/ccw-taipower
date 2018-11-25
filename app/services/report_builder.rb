@@ -4,8 +4,7 @@ class ReportBuilder
   attr_reader :expenditures, :rows
   def initialize
     @expenditures = Expenditure.joins(:organization)
-                               .merge(Organization.joins(:owner))
-                               .merge(Relative.where.not(mismatch: true))
+                               .merge(Organization.where(mismatch: false).joins(:owner))
     @rows = @expenditures.map do |exp|
       [exp.representative.job_title, exp.representative.name,
        exp.representative.party, exp.relative.kinship_name,

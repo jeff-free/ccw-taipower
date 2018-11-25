@@ -7,7 +7,7 @@ class Representative < ApplicationRecord
   }.with_indifferent_access
 
   has_many :relatives
-  has_many :organizations, through: :relatives
+  has_many :organizations, -> { where(mismatch: false) }, through: :relatives
   has_many :expenditures, through: :organizations
   enum job_type: [:congressman, :local_council_speaker]
 

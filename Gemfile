@@ -66,6 +66,7 @@ group :development do
   # gem 'mina-systemd', require: false
   gem 'mina-nginx', require: false
   gem 'mina-logs', require: false
+  gem 'rails-erd'
 end
 
 group :test do

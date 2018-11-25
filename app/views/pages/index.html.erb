@@ -35,7 +35,10 @@
                 <th class="text-right">補助金額</th>
               </tr>
             </thead>
-            <% representative.relatives.where.not(mismatch: true).joins(:organizations).distinct.each do |relative| %>
+            <% representative.relatives.joins(:organizations)
+                             .includes(:organizations)
+                             .where(organizations: { mismatch: false })
+                             .distinct.each do |relative| %>
             <tr>
               <td>
                 <%= relative.name %>

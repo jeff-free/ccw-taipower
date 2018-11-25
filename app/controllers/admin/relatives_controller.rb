@@ -4,7 +4,7 @@ class Admin::RelativesController < Admin::BaseController
   # GET /relatives
   # GET /relatives.json
   def index
-    @relatives = Relative.includes(:organization, :representative)
+    @relatives = Relative.includes(:organizations, :representative)
                          .group_by { |relative| relative.representative }
   end
 
@@ -79,6 +79,7 @@ class Admin::RelativesController < Admin::BaseController
   def relative_params
     params.fetch(:relative, {})
           .permit(:name, :title, :representative_id, :kinship_type,
-                  :kinship_name, :mismatch, :file)
+                  :kinship_name, :file,
+                  organizations_attributes: [:id, :mismatch])
   end
 end
